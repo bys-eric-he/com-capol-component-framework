@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.capol.component.framework.config.ReadAndWriteDatasourceAutoConfiguration,\
+    com.capol.component.framework.config.DefaultDatasourceAutoConfiguration  

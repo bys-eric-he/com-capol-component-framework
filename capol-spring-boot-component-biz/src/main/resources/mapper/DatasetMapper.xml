@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capol.component.biz.mapper.DatasetMapper">
+    <resultMap id="BaseResultMap" type="com.capol.component.biz.bo.DatasetDO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="BIGINT"/>
+        <result property="projectId" column="project_id" jdbcType="BIGINT"/>
+        <result property="subjectKey" column="subject_key" jdbcType="VARCHAR"/>
+        <result property="subjectId" column="subject_id" jdbcType="BIGINT"/>
+        <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
+        <result property="tableSourceType" column="table_source_type" jdbcType="TINYINT"/>
+        <result property="datasetName" column="dataset_name" jdbcType="VARCHAR"/>
+        <result property="level" column="level" jdbcType="TINYINT"/>
+        <result property="datasetSql" column="dataset_sql" jdbcType="VARCHAR"/>
+        <result property="advanceSetting" column="advance_setting" jdbcType="TINYINT"/>
+        <result property="orderNo" column="order_no" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="creator" column="creator" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updater" column="last_operator" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `id`,
+        `parent_id`,
+        `enterprise_id`,
+        `project_id`,
+        `subject_key`,
+        `ubject_id`,
+        `table_name`,
+        `table_source_type`,
+        `dataset_name`,
+        `level`,
+        `ataset_sql`,
+        `advance_setting`,
+        `order_no`,
+        `status`,
+        `creator`,
+        `create_time`,
+        `updater`,
+        `update_time`
+    </sql>
+</mapper>

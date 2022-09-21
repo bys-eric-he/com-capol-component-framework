@@ -1,0 +1,70 @@
+capol:
+  datasource:
+    # 标识的数据源
+    rw:
+      # 注入方式：读写分离=>true; 单数据源=>false; 默认false
+      enable: true
+      # 数据库类型，默认mariadb
+      dbType: mysql
+
+      # 读数据源
+      write:
+        url: jdbc:mysql://10.1.207.12:3306/db_component_slave?AllowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.alibaba.druid.pool.DruidDataSource
+        username: root
+        password: mysql_root_test_2021
+
+      # 写数据源
+      read:
+        url: jdbc:mysql://10.1.207.12:3306/db_component_master?AllowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.alibaba.druid.pool.DruidDataSource
+        username: root
+        password: mysql_root_test_2021
+
+      # 默认数据源
+      default:
+        url: jdbc:mysql://10.1.207.12:3306/db_component_master?AllowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.alibaba.druid.pool.DruidDataSource
+        username: root
+        password: mysql_root_test_2021
+  rabbit:
+    mq:
+      host: 81.68.117.201
+      port: 5672
+      username: guest
+      password: guest
+      exchange: capol-amis-demo
+      sync-queue: data-sync-queue
+      delete-queue: data-delete-queue
+      sync-routing: data-sync
+      delete-routing: data-delete
+      max-concurrent-consumers: 5
+      concurrent-consumers: 1
+  redis:
+    master: mymaster
+    nodes: 81.68.117.201:26380,81.68.117.201:26381,81.68.117.201:26382
+    time-out: 50000
+    database: 0
+    password: 123321
+    max-wait: 20000
+    max-idle: 200
+    min-idle: 10
+server:
+  port: 9980
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    com.baomidou.mybatisplus: DEBUG
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
