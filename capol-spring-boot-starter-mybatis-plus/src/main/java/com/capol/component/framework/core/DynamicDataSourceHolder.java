@@ -16,6 +16,7 @@ public class DynamicDataSourceHolder {
     }
 
     public static DBTypeEnum get() {
+        log.info("-->当前线程指定的数据库为：{}", CONTEXT_HOLDER.get());
         return CONTEXT_HOLDER.get();
     }
 

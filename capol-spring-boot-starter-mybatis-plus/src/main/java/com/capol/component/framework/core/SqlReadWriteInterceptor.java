@@ -1,6 +1,7 @@
 package com.capol.component.framework.core;
 
 
+import com.capol.component.framework.enums.DBTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
@@ -36,6 +37,7 @@ public class SqlReadWriteInterceptor implements Interceptor {
     public Object intercept(Invocation invocation) throws Throwable {
         //判断当前是否有开启事务
         boolean synchronizationActive = TransactionSynchronizationManager.isSynchronizationActive();
+        Object result = null;
         try {
             // 只针对非事务操作进行读写分离,事务直接走主库
             if (!synchronizationActive) {
@@ -53,6 +55,8 @@ public class SqlReadWriteInterceptor implements Interceptor {
                     } else {
                         DynamicDataSourceHolder.master();
                     }
+                    DBTypeEnum dbTypeEnum = DynamicDataSourceHolder.get();
+                    log.info("-->切换后当前线程中的数据库：{}", dbTypeEnum);
                 }
 
                 BoundSql boundSql = ms.getSqlSource().getBoundSql(objects[1]);
@@ -62,14 +66,14 @@ public class SqlReadWriteInterceptor implements Interceptor {
             } else {
                 DynamicDataSourceHolder.master();
             }
+            result = invocation.proceed();
         } finally {
             // 如果非事务,那么sql执行完毕后clear
             if (!synchronizationActive) {
                 DynamicDataSourceHolder.clear();
             }
         }
-
-        return invocation.proceed();
+        return result;
     }
 
     @Override

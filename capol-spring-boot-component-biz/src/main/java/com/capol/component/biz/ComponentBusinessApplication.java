@@ -28,7 +28,7 @@ public class ComponentBusinessApplication {
         CapolRedisTemplate capolRedisTemplate = SpringContextHolder.getBean(CapolRedisTemplate.class);
         capolRedisTemplate.set(CAPOL_REDIS_COMPONENT, "这是Capol Redis组件写入的数据!!!", 6000);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 3; i++) {
             Thread.sleep(1000L);
             capolRabbitMQTemplate.send(String.valueOf(2022090001 + i), String.format("这是第 %d 条MQ消息!!!!", i));
         }

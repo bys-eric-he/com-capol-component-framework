@@ -7,17 +7,17 @@ capol:
       # 数据库类型，默认mariadb
       dbType: mysql
 
-      # 读数据源
+      # 写数据源
       write:
-        url: jdbc:mysql://10.1.207.12:3306/db_component_slave?AllowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+        url: jdbc:mysql://10.1.207.12:3306/db_component_master?AllowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
         driver-class-name: com.mysql.cj.jdbc.Driver
         type: com.alibaba.druid.pool.DruidDataSource
         username: root
         password: mysql_root_test_2021
 
-      # 写数据源
+      # 读数据源
       read:
-        url: jdbc:mysql://10.1.207.12:3306/db_component_master?AllowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+        url: jdbc:mysql://10.1.207.12:3306/db_component_slave?AllowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
         driver-class-name: com.mysql.cj.jdbc.Driver
         type: com.alibaba.druid.pool.DruidDataSource
         username: root
