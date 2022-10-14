@@ -14,9 +14,11 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
 @EnableRedis(value = RedisModeConstants.REDIS_SENTINEL)
+@EnableAspectJAutoProxy
 @MapperScan(basePackages = {"com.capol.component.biz.mapper"})
 @ComponentScan(basePackages = {"com.capol.component.framework.*", "com.capol.component.biz.*"})
 public class ComponentBusinessApplication {
