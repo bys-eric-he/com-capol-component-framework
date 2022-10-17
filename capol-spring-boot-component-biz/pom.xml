@@ -56,6 +56,11 @@
             <artifactId>capol-spring-boot-starter-mybatis-plus</artifactId>
             <version>${version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.capol</groupId>
+            <artifactId>capol-spring-boot-component-common</artifactId>
+            <version>${version}</version>
+        </dependency>
     </dependencies>
 
     <build>

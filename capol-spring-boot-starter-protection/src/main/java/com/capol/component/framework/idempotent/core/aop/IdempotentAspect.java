@@ -1,6 +1,8 @@
 package com.capol.component.framework.idempotent.core.aop;
 
 
+import com.capol.component.framework.exception.ServiceException;
+import com.capol.component.framework.exception.enums.GlobalErrorCodeConstants;
 import com.capol.component.framework.idempotent.core.annotation.Idempotent;
 import com.capol.component.framework.idempotent.core.keyresolver.IdempotentKeyResolver;
 import com.capol.component.framework.idempotent.core.redis.IdempotentRedisDAO;
@@ -44,11 +46,10 @@ public class IdempotentAspect {
 
         // 锁定 Key。
         boolean success = idempotentRedisDAO.setIfAbsent(key, idempotent.timeout(), idempotent.timeUnit());
-        // 锁定失败，抛出异常
+        // 锁定失败，抛出异常(AOP中抛出的异常必须继承RuntimeException, 否则全局异常捕获将无法捕获)
         if (!success) {
             log.info("[beforePointCut][方法({}) 参数({}) 存在重复请求]", joinPoint.getSignature().toString(), joinPoint.getArgs());
-            throw new RuntimeException(idempotent.message());
+            throw new ServiceException(GlobalErrorCodeConstants.REPEATED_REQUESTS.getCode(), idempotent.message());
         }
     }
-
 }

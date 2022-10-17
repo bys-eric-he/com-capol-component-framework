@@ -1,5 +1,6 @@
 package com.capol.component.framework.pojo;
 
+
 import lombok.Data;
 
 import java.io.Serializable;

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>capol-spring-boot-starter-protection</artifactId>
+    <artifactId>capol-spring-boot-component-common</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -17,14 +17,9 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.capol</groupId>
-            <artifactId>capol-spring-boot-starter-redis</artifactId>
-            <version>${version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.capol</groupId>
-            <artifactId>capol-spring-boot-component-common</artifactId>
-            <version>${version}</version>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <scope>provided</scope> <!-- 设置为 provided，主要是 PageParam 使用到 -->
         </dependency>
     </dependencies>
 </project>
