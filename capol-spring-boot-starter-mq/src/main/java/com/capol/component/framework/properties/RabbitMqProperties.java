@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties(prefix = "capol.rabbit.mq")
+@ConfigurationProperties(prefix = "capol.rabbitmq")
 public class RabbitMqProperties {
     private String host = "";
     private int port = 5672;

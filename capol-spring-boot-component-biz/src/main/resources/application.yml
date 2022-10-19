@@ -30,8 +30,7 @@ capol:
         type: com.alibaba.druid.pool.DruidDataSource
         username: root
         password: mysql_root_test_2021
-  rabbit:
-    mq:
+  rabbitmq:
       host: 81.68.117.201
       port: 5672
       username: guest
