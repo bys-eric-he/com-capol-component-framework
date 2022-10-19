@@ -6,7 +6,7 @@ import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.stereotype.Component;
 
 /**
- * 生产者到交换机的可靠保证依靠的是： confrimCallback 机制。
+ * 生产者到交换机的可靠保证依靠的是： confirmCallback 机制。
  */
 @Component
 @Slf4j
@@ -21,9 +21,10 @@ public class RMQMsgSendConfirmCallBack extends MsgSendConfirmCallBack {
     @Override
     public void callback(CorrelationData correlationData, boolean ack, String cause) {
         if (ack) {
-            log.info("-----------客户端已经收到消息并成功消费-------------");
+            log.info("-----------消息已成功到达交换机-------------");
         } else {
-            log.error("-----------客户端消费失败-------------");
+            log.error("-----------消息到达交换机失败-------------");
+            log.error("---失败原因：{}---", cause);
         }
     }
 }

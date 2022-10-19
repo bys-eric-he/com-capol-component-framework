@@ -17,9 +17,9 @@ public abstract class MsgSendConfirmCallBack implements RabbitTemplate.ConfirmCa
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         if (ack) {
-            log.info("消息消费成功！");
+            log.info("-->消息到达交换机成功！");
         } else {
-            log.info("消息消费失败:" + cause + "\n重新发送！");
+            log.info("-->消息到达交换机失败:" + cause + "重新发送！");
         }
 
         this.callback(correlationData, ack, cause);

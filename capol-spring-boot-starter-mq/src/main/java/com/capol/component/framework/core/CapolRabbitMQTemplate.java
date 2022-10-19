@@ -26,13 +26,13 @@ public class CapolRabbitMQTemplate {
      * @param message 消息
      */
     public void send(String uuid, Object message) {
-        log.info("-->开始发送>>>>>>>>>>>>>>>>>> 消息编号：" + uuid);
+        log.info("-->开始发送>>>> 路由：{} , 消息编号：{}", rabbitMqProperties.getSyncRouting(), uuid);
         Map<String, Object> data = new HashMap<>();
         data.put("message_id", uuid);
         data.put("message_data", message);
         rabbitTemplate.convertAndSend(
                 rabbitMqProperties.getExchange(),
                 rabbitMqProperties.getSyncRouting(),
-                JSON.toJSONString(data));
+                data);
     }
 }

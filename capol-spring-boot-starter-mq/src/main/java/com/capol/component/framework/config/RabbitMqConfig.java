@@ -1,6 +1,7 @@
 package com.capol.component.framework.config;
 
 
+import com.capol.component.framework.callback.RMQMsgSendReturnCallBack;
 import com.capol.component.framework.callback.base.MsgSendConfirmCallBack;
 import com.capol.component.framework.callback.base.MsgSendReturnCallBack;
 import com.capol.component.framework.callback.RMQMsgSendConfirmCallBack;
@@ -11,6 +12,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,22 +27,31 @@ public class RabbitMqConfig {
     private ExchangeConfig exchangeConfig;
     @Autowired
     private ConnectionFactory connectionFactory;
-
+    @Autowired
+    private MsgSendConfirmCallBack msgSendConfirmCallBack;
+    @Autowired
+    private MsgSendReturnCallBack msgSendReturnCallBack;
 
     /**
      * 将消息队列1和交换机进行绑定
      */
     @Bean
-    public Binding syncBinding() {
-        return BindingBuilder.bind(queueConfig.syncQueue()).to(exchangeConfig.directExchange()).with(rabbitMqProperties.getSyncRouting());
+    public Binding syncQueueBinding() {
+        return BindingBuilder
+                .bind(queueConfig.syncQueue())
+                .to(exchangeConfig.directExchange())
+                .with(rabbitMqProperties.getSyncRouting());
     }
 
     /**
      * 将消息队列2和交换机进行绑定
      */
     @Bean
-    public Binding deleteBinding() {
-        return BindingBuilder.bind(queueConfig.deleteQueue()).to(exchangeConfig.directExchange()).with(rabbitMqProperties.getDeleteRouting());
+    public Binding deleteQueueBinding() {
+        return BindingBuilder
+                .bind(queueConfig.deleteQueue())
+                .to(exchangeConfig.directExchange())
+                .with(rabbitMqProperties.getDeleteRouting());
     }
 
     /**
@@ -73,11 +84,15 @@ public class RabbitMqConfig {
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        /**
+         * 数据转换为JSON存入消息队列
+         */
+        template.setMessageConverter(new Jackson2JsonMessageConverter());
         /**若使用confirm-callback或return-callback，
          * 必须要配置publisherConfirms或publisherReturns为true
          * 每个rabbitTemplate只能有一个confirm-callback和return-callback
          */
-        template.setConfirmCallback(msgSendConfirmCallBack());
+        template.setConfirmCallback(msgSendConfirmCallBack);
 
         /**
          * 使用return-callback时必须设置mandatory为true，或者在配置中设置mandatory-expression的值为true，
@@ -88,7 +103,7 @@ public class RabbitMqConfig {
          * 为false时,匹配不到会直接被丢弃
          */
         template.setMandatory(true);
-        template.setReturnCallback(msgSendReturnCallback());
+        template.setReturnsCallback(msgSendReturnCallBack);
         return template;
     }
 
@@ -107,12 +122,12 @@ public class RabbitMqConfig {
     }
 
     /**
-     * 发生异常时的消息返回提醒
+     * 交换机通过路由规则将消息分发到指定队列失败时回调
      *
      * @return
      */
     @Bean
     public MsgSendReturnCallBack msgSendReturnCallback() {
-        return new MsgSendReturnCallBack();
+        return new RMQMsgSendReturnCallBack();
     }
 }
